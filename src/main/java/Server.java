@@ -10,17 +10,20 @@ public class Server {
 
     private ArrayList<Clients> clients = new ArrayList();
 
-    public Server (int port) throws IOException {
+    public Server (int port) {
         Socket clientSocket = null;
         ServerSocket serverSocket = null;
+        Logger logger = Logger.getInstance();
         try {
             serverSocket = new ServerSocket(port);
             System.out.println("Server start!");
+            logger.log("Server start!");
             while (true) {
                 clientSocket = serverSocket.accept();
                 Clients client = new Clients(clientSocket, this);
                 clients.add(client);
                 new Thread(client).start();
+                //How stop it?
             }
         }
         catch (IOException ex) {
@@ -30,6 +33,7 @@ public class Server {
             try {
                 clientSocket.close();
                 System.out.println("Server stop");
+                logger.log("Server stop");
                 serverSocket.close();
             }
             catch (IOException ex) {

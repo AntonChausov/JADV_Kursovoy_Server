@@ -24,4 +24,12 @@ public class WorkWithFiles {
             System.out.println(ex.getMessage());
         }
     }
+    public static void appendString(String data, String outputFileName) {
+        try (FileWriter writer = new FileWriter(outputFileName, true)) {
+            writer.write(data);
+            writer.flush();
+        } catch (IOException ex) {
+            System.out.println(ex.getMessage());
+        }
+    }
 }

@@ -26,14 +26,16 @@ public class Clients implements Runnable {
 
     @Override
     public void run() {
+        boolean work = true;
+        Logger logger = Logger.getInstance();
         try {
-            while (true) {
+            while (work) {
                 if (inMessage.hasNext()) {
                     String clientMessage = inMessage.nextLine();
                     if (clientMessage.endsWith("/exit")) {
                         server.sendToAllUsers(name + " left chat", this);
                         sendMsg("Bye!");
-                        break;
+                        work = false;
                     } else if (clientMessage.endsWith("/start")) {
                         name = clientMessage.replace(": /start", "");
                         server.sendToAllUsers("New user connect - " + name, this);
@@ -42,6 +44,7 @@ public class Clients implements Runnable {
                         server.sendToAllUsers(clientMessage, this);
                     }
                     System.out.println(clientMessage);
+                    logger.log(clientMessage);
                 }
                 Thread.sleep(100);
             }
