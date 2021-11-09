@@ -1,11 +1,12 @@
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 public class Server implements Runnable {
 
-    private CopyOnWriteArrayList<Client> clients = new CopyOnWriteArrayList();
+    private List<Client> clients = new CopyOnWriteArrayList();
     private int port;
 
     public Server (int port) {
