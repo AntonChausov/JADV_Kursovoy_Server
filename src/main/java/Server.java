@@ -1,14 +1,19 @@
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
-public class Server {
+public class Server implements Runnable {
 
-    private volatile List<Client> clients = new ArrayList();
+    private CopyOnWriteArrayList<Client> clients = new CopyOnWriteArrayList();
+    private int port;
 
     public Server (int port) {
+        this.port = port;
+    }
+
+    @Override
+    public void run() {
         Socket clientSocket = null;
         ServerSocket serverSocket = null;
         Logger logger = Logger.getInstance();

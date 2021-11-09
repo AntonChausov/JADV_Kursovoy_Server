@@ -1,2 +1,3 @@
 rootProject.name = 'JADV_Kursovoy_Server'
+include 'test'
 

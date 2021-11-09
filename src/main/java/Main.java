@@ -13,7 +13,7 @@ public class Main {
         }
         System.out.println("port: " + port);
         Server server = new Server(port);
-
+        new Thread(server).start();
     }
 
     private static int getPort() {
