@@ -1,14 +1,12 @@
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.List;
 
 public class Server {
 
-    private ArrayList<Clients> clients = new ArrayList();
+    private volatile List<Client> clients = new ArrayList();
 
     public Server (int port) {
         Socket clientSocket = null;
@@ -20,7 +18,7 @@ public class Server {
             logger.log("Server start!");
             while (true) {
                 clientSocket = serverSocket.accept();
-                Clients client = new Clients(clientSocket, this);
+                Client client = new Client(clientSocket, this);
                 clients.add(client);
                 new Thread(client).start();
                 //How stop it?
@@ -42,8 +40,8 @@ public class Server {
         }
     }
 
-    public void sendToAllUsers(String msg, Clients thisUser) {
-        for (Clients user : clients) {
+    public void sendToAllUsers(String msg, Client thisUser) {
+        for (Client user : clients) {
             if (user.equals(thisUser)) {
                 continue;
             }
@@ -51,7 +49,7 @@ public class Server {
         }
     }
 
-    public void removeClient(Clients client) {
+    public void removeClient(Client client) {
         clients.remove(client);
     }
 }

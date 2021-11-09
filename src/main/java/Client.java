@@ -3,18 +3,17 @@ import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.Scanner;
 
-public class Clients implements Runnable {
+public class Client implements Runnable {
     private Server server;
     private PrintWriter outMessage;
     private Scanner inMessage;
     private static String name = "";
-    private static final int PORT = 3443;
     private Socket clientSocket = null;
-    private static int clients_count = 0;
+    private static int clientsCount = 0;
 
-    public Clients(Socket socket, Server server) {
+    public Client(Socket socket, Server server) {
         try {
-            clients_count++;
+            clientsCount++;
             this.server = server;
             this.clientSocket = socket;
             this.outMessage = new PrintWriter(socket.getOutputStream());
@@ -39,7 +38,7 @@ public class Clients implements Runnable {
                     } else if (clientMessage.endsWith("/start")) {
                         name = clientMessage.replace(": /start", "");
                         server.sendToAllUsers("New user connect - " + name, this);
-                        server.sendToAllUsers("Users count = " + clients_count, null);
+                        server.sendToAllUsers("Users count = " + clientsCount, null);
                     } else {
                         server.sendToAllUsers(clientMessage, this);
                     }
@@ -69,7 +68,7 @@ public class Clients implements Runnable {
     public void close() {
 
         server.removeClient(this);
-        clients_count--;
-        server.sendToAllUsers("Users count = " + clients_count, null);
+        clientsCount--;
+        server.sendToAllUsers("Users count = " + clientsCount, null);
     }
 }
